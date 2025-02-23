@@ -14,13 +14,16 @@ Then load the ADSIsearch.cna script into Cobalt Strike.
 
 ## Example Usage
 Using `basicrecon`:
+
 ```ADSIsearch basicrecon```
 
 Using `query`:
+
 ```ADSIsearch query <LDAP Query> <Optional Filter>```
 ```ADSIsearch query (objectCategory=user) samaccountname```
 
 ## Demo
+![ADSIsearch](demos/ADSIsearch.gif)
 
 ## Credits:
 My BOF is heavily based off of [Microsoft's example code](https://github.com/microsoft/Windows-classic-samples/tree/main/Samples/Win7Samples/netds/adsi/activedir) and [Outflank's Recon-AD](https://www.outflank.nl/blog/2019/10/20/red-team-tactics-active-directory-recon-using-adsi-and-reflective-dlls/) project. I made this BOF to better understand how these tools worked and also use different parts from both projects to produce what I was looking for.

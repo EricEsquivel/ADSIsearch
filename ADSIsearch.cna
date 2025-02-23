@@ -1,0 +1,51 @@
+# ADSIsearch is a way to query Active Directory using ADSI COM interface APIs and ADDS & Network Management APIs
+# by EricEsquivel
+
+alias ADSIsearch {
+	
+	$bofToRun = $2;
+	
+	if ($bofToRun eq "basicrecon")
+	{
+	    btask($1, "Tasked beacon to inline-execute basicrecon.x64.o");
+	    $handle = openf(script_resource("basicrecon/basicrecon.x64.o"));
+   		$basicBOF = readb($handle, -1);
+   		closef($handle);
+		beacon_inline_execute($1, $basicBOF, "BasicRecon");
+	}
+	else if ($bofToRun eq "query")
+	{
+		if (size(@_) < 3)
+		{
+			berror($1, "Invalid number of arguments! (See 'help ADSIsearch query')");
+			return -1;
+		}
+		btask($1, "Tasked beacon to inline-execute query.x64.o");
+		$ldapquery = $3;
+		$ldapfilter = $4;
+		$args = bof_pack($1, "zz", $ldapquery, $ldapfilter);
+		$handle = openf(script_resource("query/query.x64.o"));
+   		$queryBOF   = readb($handle, -1);
+   		closef($handle);
+		beacon_inline_execute($1, $queryBOF, "go", $args);
+	}
+	else
+	{
+		berror($1, "Incorrect argument supplied to ADSIsearch! Requires 'basicrecon' or 'query'!");
+	}	
+}
+
+beacon_command_register(
+	"ADSIsearch",
+	"Use ADSI COM interface APIs or ADDS & Network Management APIs to query AD",
+	"Syntax: ADSIsearch <basicrecon/query>");
+
+beacon_command_register(
+	"ADSIsearch basicrecon",
+	"Use ADDS APIs to query AD",
+	"Syntax: ADSIsearch basicrecon");
+
+beacon_command_register(
+	"ADSIsearch query",
+	"Use ADSI COM interface to query AD",
+	"Syntax: ADSIsearch query <ldap query> [attribute1,attribute2]");
