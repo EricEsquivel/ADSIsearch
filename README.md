@@ -17,6 +17,7 @@ Using `basicrecon`:
 
 ```ADSIsearch basicrecon```
 
+
 Using `query`:
 
 ```ADSIsearch query <LDAP Query> <Optional Filter>```
